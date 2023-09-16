@@ -171,16 +171,19 @@ if __name__ == '__main__':
         image1 = np.load("rna_autoenc_c50400835s5_pos2_8bit.npy")
         image2 = np.load("rna_autoenc_c50400835s5_pos206_8bit.npy")
         images = [image1]
-        tiles = [hist_img_to_tiles(img,(1<<5)-1,(1<<4)-1) for img in images]
+        tiles = [hist_img_to_tiles(img,(1<<5)-1,(1<<3)-1) for img in images]
         train_images_dataset = np.concatenate(tiles, axis=0)
 
         image1 = np.load("rna_autoenc_c50400835s5_pos22_8bit.npy")
         images = [image1]
-        tiles = [hist_img_to_tiles(img,(1<<5)-1,(1<<4)-1) for img in images]
+        tiles = [hist_img_to_tiles(img,(1<<5)-1,(1<<3)-1) for img in images]
+        #print(tiles[0].shape)
         test_images_dataset = np.concatenate(tiles, axis=0)
 
+
+        latent_dim = 31
         logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
-        model = UNET(n_channels=train_images_dataset.shape[1])
+        model = UNET(n_channels=train_images_dataset.shape[1], latent_dim=latent_dim)
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         logging.info(f'Using device {device}')
         model.to(device=device)
